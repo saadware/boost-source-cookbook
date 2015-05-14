@@ -1,20 +1,20 @@
-include_recipe "apt"
-include_recipe "build-essential"
+include_recipe 'apt'
+include_recipe 'build-essential'
 
 tar_file = node['boost-source']['file']
 remote_file "#{Chef::Config[:file_cache_path]}/#{tar_file}" do
   source node['boost-source']['download_url']
-  mode "0644"
+  mode '0644'
   action :create_if_missing
 end
 
 # python headers and bzip needed for full boost compile
 case node['platform']
-when "centos","rhel","fedora"
+when 'centos','redhat','fedora','amazon'
     %w{python-devel bzip2-devel}.each do |pkg|
         package pkg
     end
-when "ubuntu","debian"
+when 'ubuntu','debian'
     %w{python-dev libbz2-dev}.each do |pkg|
         package pkg
     end
